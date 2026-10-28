@@ -1,0 +1,124 @@
+{
+  "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved": "2026-10-25",
+  "changes": "Files renamed for game cues; original audio bytes preserved. Gain and fades are applied during playback.",
+  "files": [
+    {
+      "file": "meadow-thoughts.ogg",
+      "original": "Meadow Thoughts.ogg",
+      "author": "Écrivain",
+      "source": "https://opengameart.org/content/meadow-thoughts",
+      "license": "CC0-1.0",
+      "bytes": 2396007,
+      "sha256": "9c55cfadb5acca6ef9ca81bf89d343b13f2b09984d45ae520cf877f1f9ad4404"
+    },
+    {
+      "file": "page-turn.ogg",
+      "original": "Audio/bookFlip2.ogg",
+      "author": "Kenney (Kenney Vleugels)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0-1.0",
+      "bytes": 12393,
+      "sha256": "3409042acbfaebc24c1a6327dc073e36f9250841712e96c5040da566a97df73c"
+    },
+    {
+      "file": "seal-close.ogg",
+      "original": "Audio/bookClose.ogg",
+      "author": "Kenney (Kenney Vleugels)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0-1.0",
+      "bytes": 9292,
+      "sha256": "81e976532565f4372abd14e83d2684195fa548d0a28d345de221e56052454f32"
+    },
+    {
+      "file": "coins.ogg",
+      "original": "Audio/handleCoins2.ogg",
+      "author": "Kenney (Kenney Vleugels)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0-1.0",
+      "bytes": 13094,
+      "sha256": "4b857968d64f9ac9336a10ffac6694d7547e1f01566ad6857b30bc8db3ee6c32"
+    },
+    {
+      "file": "steel.ogg",
+      "original": "Audio/metalPot2.ogg",
+      "author": "Kenney (Kenney Vleugels)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0-1.0",
+      "bytes": 22471,
+      "sha256": "8e1f820d217d380fde10e969d109db34303e3f4d11c3951926eddef813d04ae2"
+    },
+    {
+      "file": "click.ogg",
+      "original": "ui_ogg/click_2.ogg",
+      "author": "Robin Lamb; VCSL / VSCO 2 CE samples by Versilian Studios",
+      "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications",
+      "license": "CC0-1.0",
+      "bytes": 9487,
+      "sha256": "da523b03e042dde09cf4633615a42ad733cfb35899c5863b0cb9486269c78cd9"
+    },
+    {
+      "file": "bell.ogg",
+      "original": "ui_ogg/ding_deep.ogg",
+      "author": "Robin Lamb; VCSL / VSCO 2 CE samples by Versilian Studios",
+      "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications",
+      "license": "CC0-1.0",
+      "bytes": 33808,
+      "sha256": "7e61202079948a5bb7bb6bb37f22d3d367abdcfb9afd73a52e6f883a93de24be"
+    },
+    {
+      "file": "chimes.ogg",
+      "original": "ui_ogg/chimes.ogg",
+      "author": "Robin Lamb; VCSL / VSCO 2 CE samples by Versilian Studios",
+      "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications",
+      "license": "CC0-1.0",
+      "bytes": 46395,
+      "sha256": "bb9c1826553beb87e47a534f9608a7dcd236614bb6194f4323d4661df81e895e"
+    },
+    {
+      "file": "drum.ogg",
+      "original": "ui_ogg/dum.ogg",
+      "author": "Robin Lamb; VCSL / VSCO 2 CE samples by Versilian Studios",
+      "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications",
+      "license": "CC0-1.0",
+      "bytes": 10845,
+      "sha256": "5a6db933faefdde2572a23f41ab5f64912ef1c60cd5f8c4ab1ee5d03b04ea009"
+    },
+    {
+      "file": "warning.ogg",
+      "original": "ui_ogg/alarm2.ogg",
+      "author": "Robin Lamb; VCSL / VSCO 2 CE samples by Versilian Studios",
+      "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications",
+      "license": "CC0-1.0",
+      "bytes": 34658,
+      "sha256": "7c2f7fcee34574818d97426cf669621a41ad399dbc12213fdf8458f8b9138464"
+    },
+    {
+      "file": "danger.ogg",
+      "original": "ui_ogg/alarm.ogg",
+      "author": "Robin Lamb; VCSL / VSCO 2 CE samples by Versilian Studios",
+      "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications",
+      "license": "CC0-1.0",
+      "bytes": 12068,
+      "sha256": "2c570ccd930b9fb4564283624dc05b4eafa9352687b7c3af8375215fde03518b"
+    },
+    {
+      "file": "loss.ogg",
+      "original": "ui_ogg/negative_sound.ogg",
+      "author": "Robin Lamb; VCSL / VSCO 2 CE samples by Versilian Studios",
+      "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications",
+      "license": "CC0-1.0",
+      "bytes": 22973,
+      "sha256": "c10a93a33e795d7e078e7dfe1baeb0fbe75e19fc65cb2e016a8ebe0b41be3745"
+    },
+    {
+      "file": "error.ogg",
+      "original": "ui_ogg/negative_sound2.ogg",
+      "author": "Robin Lamb; VCSL / VSCO 2 CE samples by Versilian Studios",
+      "source": "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications",
+      "license": "CC0-1.0",
+      "bytes": 17524,
+      "sha256": "a068c1a2a375149da67bb8e547079987800b1ce21debb7f51ca556eeeaabd56a"
+    }
+  ]
+}

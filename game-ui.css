@@ -1,0 +1,507 @@
+@font-face{font-family:'Pretendard';font-style:normal;font-weight:100 900;font-display:swap;src:url('assets/fonts/PretendardVariable.woff2') format('woff2')}
+/* The realm's instruments: brass, dark timber, parchment and sealing wax. */
+:root{
+ --ui-brass:#bca16b;--ui-brass-light:#f0d699;--ui-wood:#242c25;
+ --ui-paper:#e9d6ab;--ui-paper-ink:#382e20;--ui-paper-muted:#6d5839;--ui-wax:#803b30;
+ --ui-frame:inset 0 0 0 2px #171e18,inset 0 0 0 3px #a68a505e,0 5px 14px #10201866;
+}
+.game-shell .resources,.game-shell .time-hud,.game-shell .context-panel,.start-card{
+ background-color:var(--ui-wood);background-image:linear-gradient(110deg,#17251ee8,#36392ce8),var(--paint-panel);
+ border:1px solid var(--ui-brass);border-radius:1px;box-shadow:var(--ui-frame);
+}
+.game-shell .resources{border-bottom:3px double var(--ui-brass);padding-left:14px}
+.resources .faction-id strong{filter:drop-shadow(0 2px 2px #0008)}
+.resources strong{color:#f4e4bb;text-shadow:0 2px #121c17;font-variant-numeric:tabular-nums}
+.game-shell .time-hud{border-top:3px double var(--ui-brass)}
+.time-hud .execute-button{border-radius:1px;box-shadow:inset 0 0 0 1px #53412199;font-family:var(--serif)}
+.game-shell .command-dock{gap:8px;padding:0;background:none;border:0;box-shadow:none}
+.game-shell .command-dock button{
+ position:relative;min-height:54px;padding:5px 12px 6px 7px;border:1px solid #a78d5f;border-top:3px double #d9be81;
+ border-radius:0 0 3px 3px;background:linear-gradient(110deg,#28382cf7,#17271ff7);box-shadow:inset 0 -3px #121e17,0 4px 6px #17231955;
+ color:#dfcfa6;transition:color .15s,background .15s;
+}
+.game-shell .command-dock button span{font-family:var(--serif);font-size:13px;letter-spacing:1px}
+.game-shell .command-dock button .game-icon{
+ width:36px;height:36px;padding:2px;background:none;border:0;box-shadow:none;border-radius:0;filter:drop-shadow(0 2px 2px #0007);
+}
+
+.game-shell .command-dock button:hover,.game-shell .command-dock button.selected{
+ border-color:#f0d699;background:linear-gradient(110deg,#62553a,#35402c);color:#fff0c3;box-shadow:inset 0 -3px #d1b171,0 4px 8px #17231966;
+}
+.game-shell .command-dock .awaiting-response{border-color:#e5bd79;background:linear-gradient(110deg,#653e2b,#3b3424)}
+.game-shell #diplomacy-badge{background:var(--ui-wax);color:#ffe8bd;border:1px solid #db9c70;box-shadow:inset 0 0 0 2px #602e28;border-radius:50%;font-size:11px}
+.game-shell .menu-button{border:3px double var(--ui-brass);background:#273329;border-radius:50%;box-shadow:0 3px 8px #10221888;font-size:24px;color:#ddc68c}
+
+.game-shell .world-overview{padding:5px;border:3px double var(--ui-brass);border-radius:0;background:#28372b;box-shadow:0 4px 12px #14241f77}
+.world-overview canvas{border-radius:0}.world-overview span{color:#e9cf97}
+.game-shell .context-panel{border:3px double var(--ui-brass);overflow:hidden}
+.drawer-bar{height:36px;background:linear-gradient(90deg,#263328,#3a3d2c,#263328);border-bottom:3px double #ad915962;color:#e6ce99;font-size:12px}
+.drawer-bar>span:before{content:'◆';font-size:8px;margin-right:10px;color:#c4a163}
+.drawer-bar button{color:#ecd3a2}.drawer-bar button:hover{background:#bba16b22}
+.context-panel .primary,.start-card .primary{border-radius:1px;border:3px double #d1b276;box-shadow:0 3px 0 #423b26,inset 0 0 12px #7a5c3622}
+.context-panel .order-types button{border-radius:1px}.context-panel .hero-portrait{border-radius:1px;border:3px double #b29862}
+.context-panel select,.context-panel input[type=text]{border-radius:0}
+.game-shell[data-view=roster] .panel-content{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#998650 #20382b}
+.game-shell .threat-watch{border-radius:0;background:#29372ef5;border-top:1px solid #baa06d66;border-bottom:1px solid #baa06d66}
+
+/* A dispatch is a small sealed letter, never a page-wide service banner. */
+.game-shell .diplomacy-alert{
+ right:auto;width:min(590px,calc(100% - 44px));border:1px solid #9a7949;border-left:1px solid #9a7949;border-radius:1px;
+ background-color:var(--ui-paper);background-image:linear-gradient(110deg,#f8e9c9d9,#e6d2a8d9),var(--paint-parchment);
+ box-shadow:inset 0 0 0 3px #e9d3a3,inset 0 0 0 4px #a3864b80,0 6px 15px #17251f66;
+ animation:letter-arrives .35s ease-out;
+}
+.diplomacy-alert-main{color:var(--ui-paper-ink);padding-left:12px}
+.diplomacy-alert-main:hover:not(:disabled){background:#ad824318}
+.diplomacy-alert-main small{color:var(--ui-paper-muted);letter-spacing:.5px}
+.diplomacy-alert-main strong{font-size:16px}
+.diplomacy-alert-icon{display:grid;place-items:center;flex-shrink:0;width:36px;height:36px;font:23px Georgia,serif;color:#f1d6a5;background:radial-gradient(circle at 35% 30%,#a45644,#6b3028);border:3px double #bf7852;border-radius:50%;box-shadow:1px 2px 3px #5c3b3277;transform:rotate(-9deg)}
+.diplomacy-alert-deadline{color:#614721;font-family:var(--serif)}
+.diplomacy-alert-all{color:#604a2e;border:0;border-left:1px solid #9a794966;border-radius:0;background:none}
+.diplomacy-alert-all:hover:not(:disabled){background:#9a794922}
+.game-shell .diplomacy-alert[data-urgent=true]{border-color:#933d2c}.diplomacy-alert[data-urgent=true] .diplomacy-alert-deadline{color:#8a3023;font-weight:bold}
+
+/* Diplomacy unfolds on parchment; choices are entries in a court ledger. */
+.game-shell[data-view=diplomacy] .left-panel{
+ --ink:var(--ui-paper-ink);--muted:var(--ui-paper-muted);--gold:#775329;--line:#8b693849;
+ width:350px;background-color:var(--ui-paper);background-image:linear-gradient(110deg,#f6e7c9e8,#e6d2aae8),var(--paint-parchment);
+ color:var(--ui-paper-ink);box-shadow:inset 0 0 22px #77522c40,0 12px 32px #13231c66;
+}
+.game-shell[data-view=diplomacy] .panel-content{padding:16px 22px 24px;scrollbar-color:#9a7949 #dfcea7}
+.diplomacy-panel{font-family:var(--serif);font-size:13px}
+
+
+
+.diplomacy-panel h2{font-size:27px;letter-spacing:1px;line-height:1.4;text-shadow:0 1px #fff7df88}
+.diplomacy-panel h2:after{content:'';display:block;width:44px;margin-top:12px;border-bottom:3px double #967444}
+.diplomacy-panel .diplomacy-subtitle{line-height:1.7;margin:10px 0 20px}
+.diplomacy-panel .diplomacy-choice{display:flex;align-items:center;gap:12px;padding:14px 2px;margin:0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;box-shadow:none;color:var(--ink)}
+.diplomacy-choice .choice-copy{flex:1;min-width:0}.diplomacy-choice strong{font:16px var(--serif);color:var(--ink)}
+.diplomacy-choice small{color:var(--muted);font-size:11px;line-height:1.6}
+.diplomacy-panel .diplomacy-choice:hover:not(:disabled){background:linear-gradient(90deg,#9b78451c,transparent);border-color:#8b6938}
+.diplomacy-choice .realm-crest{display:grid;place-items:center;flex-shrink:0;width:43px;height:52px;background:url('assets/art/ui/emblem.webp') center/contain no-repeat;color:#f2deb0;font:28px var(--serif);text-shadow:0 2px #24382c;filter:drop-shadow(0 2px 2px #5f482855)}
+.diplomacy-shortcuts{border-top:3px double var(--line);padding-top:12px;margin-top:26px}
+.diplomacy-shortcuts .diplomacy-choice{padding:9px 0}.diplomacy-shortcuts strong{font-size:13px}
+.diplomacy-terms{margin:22px 0;padding:0 10px;border-top:3px double var(--line);border-bottom:3px double var(--line);background:#fff2cf2e}
+.diplomacy-terms>div:last-child{border:0}.diplomacy-terms dd{font-size:16px;font-weight:bold;color:#563d21}
+.diplomacy-panel .field{color:var(--ui-paper-muted);font-size:12px}
+.diplomacy-panel .note{color:var(--ui-paper-muted)}
+.diplomacy-panel .field input,.diplomacy-panel .field select{border:0;border-bottom:1px solid #997b4b;border-radius:0;background:#fff3d23d;color:var(--ui-paper-ink);font:16px var(--serif);box-shadow:inset 0 -2px #9b784510;padding:9px 7px}
+.diplomacy-panel option{background:#eee0bd;color:#382e20}
+.diplomacy-panel .primary{position:relative;margin-top:22px;min-height:46px;background:linear-gradient(#8e4839,#703428);border:3px double #be8c59;color:#fff0ce;box-shadow:0 3px 0 #4b2920,inset 0 0 0 1px #602b23;font:14px var(--serif);letter-spacing:1px}
+.diplomacy-panel .primary:hover:not(:disabled){background:linear-gradient(#a75c45,#803d30);border-color:#e1b875}
+.diplomacy-panel button:not(.primary):hover:not(:disabled){color:#713b24}
+.diplomacy-panel [data-offer-reject]{display:block;margin:16px auto 0;padding:7px 12px;border:0;border-bottom:1px solid #9a7949;background:none;color:#6b4b30;font-family:var(--serif)}
+.diplomacy-result{display:inline-block;border:2px solid #946138;padding:3px 10px;color:#7e4f2e;letter-spacing:2px;transform:rotate(-2deg)}
+.diplomacy-panel [data-withdraw-war]{background:#e3cca0;color:#663d2a;border:1px solid #9a7949}
+.diplomacy-panel :focus-visible{outline-color:#8b3e2c}
+.start-card{border:3px double var(--ui-brass);padding:38px}.start-card h1{letter-spacing:4px}.start-card .field input,.start-card .field select{border-radius:0}
+@keyframes letter-arrives{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){
+ .game-shell .resources{padding-left:10px}.game-shell .time-hud{border-radius:0}
+ .game-shell .command-dock{gap:4px}.game-shell .command-dock button{min-height:54px;padding:3px 0;gap:1px}
+ .game-shell .command-dock button span{font-size:10px;letter-spacing:0}
+ .game-shell .command-dock button .game-icon{width:25px;height:25px}
+
+ .game-shell .diplomacy-alert{width:calc(100% - 24px)}
+ .diplomacy-alert-main{padding:7px 8px;gap:7px}.diplomacy-alert-main strong{font-size:13px}.diplomacy-alert-main small{letter-spacing:0}
+ .diplomacy-alert-icon{width:30px;height:30px;font-size:19px}.diplomacy-alert-all{margin-right:6px}
+ .game-shell[data-view=diplomacy] .left-panel{width:auto;left:12px;right:12px}
+ .game-shell[data-view=diplomacy] .panel-content{padding:12px 18px 24px}.diplomacy-panel h2{font-size:24px}
+.diplomacy-panel .diplomacy-choice{padding:12px 0}
+
+ .diplomacy-panel[data-screen=offer] .diplomacy-subtitle{margin-bottom:12px}
+ .diplomacy-panel[data-screen=offer] .diplomacy-terms{margin:16px 0}
+ .diplomacy-panel .diplomacy-actions{display:flex;align-items:stretch;gap:8px;margin-top:18px}
+ .diplomacy-panel .diplomacy-actions .primary{flex:1;min-width:0;margin:0;padding:10px 6px;font-size:12px;letter-spacing:0}
+ .diplomacy-panel .diplomacy-actions [data-offer-reject]{flex:0 0 70px;margin:0;padding:7px;border:1px solid #9a7949;background:#d8bf8c33;font-size:11px}
+ .start-card{padding:28px 22px}
+}
+@media(prefers-reduced-motion:reduce){.game-shell .diplomacy-alert{animation:none}.game-shell .command-dock button{transition:none}}
+
+/* One upper row, with the same hover and selection feedback for every resource. */
+.game-shell{--content-top:92px}.game-shell[data-diplomacy-pending=true]{--content-top:166px}
+.game-shell .topbar{top:0;left:0;right:0;height:80px;padding:8px 12px;display:flex;align-items:center;gap:8px;pointer-events:auto;z-index:6;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:#9c8351 #243328;overscroll-behavior-x:contain}
+.game-shell .resources{flex:0 0 auto;width:auto;max-width:none;height:64px;padding:5px 8px;gap:0}
+.game-shell .resources>button{position:relative;min-width:62px;height:48px;padding:3px 12px;border:0;border-left:1px solid #9c875043;border-radius:0;box-shadow:none;transition:background .12s,box-shadow .12s}
+.game-shell .resources>.faction-id{min-width:0;padding-left:4px;border:0;gap:7px}
+.game-shell .resources>.faction-id strong{height:44px;width:35px}
+.game-shell .resources>.faction-id:hover>span{text-decoration:none}
+.game-shell .resources>button:hover:not(:disabled),.game-shell .resources>button[aria-expanded=true]{background:#bea36b26;border-color:#9c875043;box-shadow:none;color:#fff0c3}
+.game-shell .resources>button small{letter-spacing:0}.game-shell .resources>button strong{font-size:20px}
+.game-shell .command-dock{position:static;flex:0 0 auto;transform:none;gap:5px;justify-content:flex-start;margin-left:0}
+.game-shell .topbar .command-dock button{display:flex}
+.game-shell .command-dock button{height:64px;min-height:64px;padding:6px 9px;flex:none}
+.game-shell .time-hud{position:static;flex:0 0 210px;width:210px;height:64px;margin-left:auto;padding:7px 9px}
+.game-shell .menu-button{position:static;flex:0 0 40px;width:40px;height:40px}
+.game-shell .diplomacy-alert{top:92px}
+@media(max-width:1250px){
+ .game-shell .command-dock button{flex-direction:column;justify-content:center;gap:3px;width:56px;padding:4px 2px}
+ .game-shell .command-dock button .game-icon{width:28px;height:28px}
+ .game-shell .command-dock button span{font-size:11px;letter-spacing:0}
+
+ .game-shell .resources>button{min-width:55px;padding-left:9px;padding-right:9px}
+}
+@media(max-width:760px){
+ .game-shell{--content-top:88px}.game-shell[data-diplomacy-pending=true]{--content-top:162px}
+ .game-shell .topbar{height:76px;padding:6px 12px}
+ .game-shell .resources{height:60px;padding:4px 6px;justify-content:flex-start}
+ .game-shell .resources>button strong{font-size:18px}.game-shell .resources>.faction-id strong{width:28px;height:39px}
+ .game-shell .command-dock button{height:60px;min-height:60px}
+ .game-shell .time-hud{display:block;height:60px;padding:7px 9px}
+ .game-shell .calendar{text-align:center;font-size:12px}.game-shell .calendar small{display:inline;margin-left:6px}
+ .game-shell .time-actions{margin-top:7px}
+ .game-shell .diplomacy-alert{top:88px}
+}
+
+/* Keep every diplomacy decision beside the next, each with its own scroll. */
+.game-shell[data-view=diplomacy] .left-panel{width:auto;right:22px;border:0;background:none;box-shadow:none;overflow:visible;pointer-events:none;animation:none}
+.game-shell[data-view=diplomacy] .left-panel>.drawer-bar{display:none}
+.game-shell[data-view=diplomacy] .panel-content{padding:0;overflow:hidden;pointer-events:none}
+.diplomacy-columns{display:flex;align-items:stretch;gap:10px;height:100%;max-width:100%;width:max-content;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;pointer-events:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#a58a57 #243328;scroll-snap-type:x proximity}
+.diplomacy-columns .diplomacy-panel{display:flex;flex-direction:column;flex:0 0 300px;min-width:0;height:100%;border:3px double var(--ui-brass);background-color:var(--ui-paper);background-image:linear-gradient(110deg,#f6e7c9e8,#e6d2aae8),var(--paint-parchment);box-shadow:inset 0 0 22px #77522c40;scroll-snap-align:end;animation:diplomacy-unfold .18s ease-out}
+.diplomacy-column-heading{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;min-height:35px;padding:0 11px;background:#29372c;border-bottom:3px double #ad915962;color:#e6ce99;font:12px var(--serif);letter-spacing:2px}
+.diplomacy-panel .diplomacy-column-heading button{margin:0;padding:0;width:28px;height:29px;background:none;border:0;color:#ecd3a2;font:22px Georgia,serif}
+.diplomacy-panel .diplomacy-column-heading button:hover:not(:disabled){background:#bba16b22;color:#fff0c3}
+.diplomacy-column-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;padding:18px 18px 24px;scrollbar-width:thin;scrollbar-color:#9a7949 #dfcea7}
+.diplomacy-column-body h2{font-size:23px}
+.diplomacy-panel .diplomacy-choice.selected{background:#9b784524;box-shadow:inset 3px 0 #916432;padding-left:10px;border-color:var(--line)}
+.diplomacy-panel .primary:disabled{opacity:.65}
+@keyframes diplomacy-unfold{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:760px){
+ .game-shell[data-view=diplomacy] .left-panel{left:12px;right:12px}
+ .game-shell[data-view=diplomacy] .panel-content{padding:0}
+ .diplomacy-columns .diplomacy-panel{flex-basis:calc(100vw - 54px)}
+ .diplomacy-column-body{padding:16px 16px 22px}
+}
+@media(prefers-reduced-motion:reduce){.diplomacy-columns .diplomacy-panel{animation:none}}
+
+/* Readable Korean type, with one family and a consistent size hierarchy. */
+:root{--font-ui:'Pretendard','Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;--serif:var(--font-ui);--muted:#c1c8b7;font-family:var(--font-ui);font-size:17px}
+.game-shell,.start-screen{font-family:var(--font-ui);font-size:17px;line-height:1.6}
+.game-shell button,.game-shell input,.game-shell select,.start-screen button,.start-screen input,.start-screen select{font-family:var(--font-ui)}
+.game-shell .context-panel{width:380px;font-size:17px;line-height:1.6}
+.game-shell .panel-content{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#998650 #20382b}
+.game-shell .panel-heading h2,.game-shell .city-title h2,.game-shell .node-heading h2{font:700 26px/1.35 var(--font-ui);letter-spacing:0;max-width:none}
+.game-shell .panel-heading{gap:10px;align-items:center}.game-shell .panel-heading h2{min-width:0}
+.game-shell .drawer-bar,.game-shell .diplomacy-column-heading{min-height:40px;height:auto;font:600 15px/1.4 var(--font-ui);letter-spacing:0}
+.game-shell .drawer-bar button,.game-shell .diplomacy-column-heading button{width:32px;height:32px;font-size:26px;flex-shrink:0}
+.game-shell .context-panel p,.game-shell .context-panel .field,.game-shell .context-panel .slider-label,.game-shell .context-panel .detail-list>div,.game-shell .context-panel .resource-forecast,.game-shell .context-panel .resource-history article{font-size:17px;line-height:1.65}
+.game-shell .context-panel small,.game-shell .context-panel .note,.game-shell .context-panel .validation,.game-shell .context-panel .commander-note,.game-shell .context-panel .calculation,.game-shell .context-panel .resource-history time{font:15px/1.6 var(--font-ui)}
+.game-shell .context-panel button{font-size:15px;line-height:1.5}
+.game-shell .context-panel .drawer-bar button,.game-shell .diplomacy-panel .diplomacy-column-heading button{font:26px/1 var(--font-ui)}
+.game-shell .context-panel .primary,.start-screen .primary{font:600 17px/1.5 var(--font-ui);letter-spacing:0;min-height:44px}
+.game-shell .context-panel input:not([type=range]),.game-shell .context-panel select,.start-screen input,.start-screen select{font:17px/1.5 var(--font-ui);min-height:40px}
+.game-shell .context-panel .field select{padding:7px}.game-shell .context-panel .text-button{font-size:15px}
+.game-shell .context-panel .note{color:var(--muted)}
+
+.game-shell .city-title{height:auto;min-height:70px}.game-shell .city-title small{font-size:14px}
+.game-shell .city-numbers strong,.game-shell .army-stats strong,.game-shell .node-totals strong{font:600 26px/1.4 var(--font-ui)}
+.game-shell .city-numbers strong span,.game-shell .army-stats,.game-shell .node-totals span{font-size:15px}
+.game-shell .order-types button{font-size:15px;min-height:62px}
+.game-shell .order-preview strong,.game-shell .army-profile strong,.game-shell .army-state>strong{font-size:18px;line-height:1.5}
+.game-shell .order-preview span,.game-shell .order-preview .text-button,.game-shell .slider-label b{font-size:15px}
+.game-shell .roster h3{font:700 23px/1.4 var(--font-ui)}
+.game-shell .roster h3 small{font-size:15px;margin:6px 0}
+.game-shell .roster article strong,.game-shell .roster article span{font-size:15px;line-height:1.6}
+.game-shell .roster p{font-size:17px;line-height:1.65;color:#d5ddcb}
+.game-shell .roster article span{color:#bcc8af}.game-shell .roster article{padding:10px 0 18px;gap:14px}
+.game-shell .roster .hero-portrait{width:76px}
+.game-shell .activity-list{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#998650 #20382b}
+.game-shell .army-row strong,.game-shell .faction-row strong,.game-shell .node-unit-title strong,.game-shell .live-job strong{font:600 18px/1.5 var(--font-ui)}
+.game-shell .army-row em,.game-shell .node-unit-title b,.game-shell .live-job span,.game-shell .live-job small,.game-shell .quiet-news{font-size:15px;line-height:1.6}
+.game-shell .army-row p,.game-shell .node-unit p,.game-shell .news-report p{font-size:17px;line-height:1.6}
+.game-shell .settings-copy h3{font-size:22px}.game-shell .settings-copy p,.game-shell .settings-copy>button{font-size:17px}
+.game-shell .sound-settings .slider-label,.game-shell .sound-settings>button{font-size:15px}
+.game-shell .diplomacy-panel{font:17px/1.65 var(--font-ui)}
+.game-shell .diplomacy-column-body h2{font:700 26px/1.4 var(--font-ui);letter-spacing:0}
+.game-shell .diplomacy-panel .diplomacy-subtitle,.game-shell .diplomacy-choice small{font-size:15px;line-height:1.6}
+.game-shell .diplomacy-choice strong{font:600 18px/1.5 var(--font-ui)}
+.game-shell .diplomacy-shortcuts strong{font-size:17px}
+.game-shell .diplomacy-terms dt{font-size:17px}.game-shell .diplomacy-terms dd{font-size:19px}
+.game-shell .diplomacy-result{font-size:15px;letter-spacing:0}
+.diplomacy-columns .diplomacy-panel{flex-basis:350px}
+.game-shell .diplomacy-panel .diplomacy-actions .primary{font-size:17px}
+.game-shell .diplomacy-panel .diplomacy-actions [data-offer-reject]{font-size:15px;flex-basis:84px}
+.game-shell{--content-top:100px}.game-shell[data-diplomacy-pending=true]{--content-top:180px}
+.game-shell .topbar{height:88px}.game-shell .resources,.game-shell .time-hud{height:72px}
+.game-shell .resources>button{height:56px}
+.game-shell .resources>button small,.game-shell .resources>.faction-id span{font:14px/1.4 var(--font-ui)}
+.game-shell .resources>button strong{font:600 25px/1.3 var(--font-ui)}
+.game-shell .resources .command-meter strong span,.game-shell .resources .news-button strong span{font-size:14px}
+.game-shell .command-dock button{height:72px;min-height:72px}
+.game-shell .command-dock button span{font:600 16px/1.4 var(--font-ui);letter-spacing:0}
+.game-shell .time-hud{flex-basis:246px;width:246px;padding:6px 9px}
+.game-shell .calendar{font:600 15px/1.4 var(--font-ui);letter-spacing:0}
+.game-shell .calendar small{font:12px/1.4 var(--font-ui)}
+.game-shell .time-actions .execute-button,.game-shell .time-actions .speed-controls button{font:14px/1.4 var(--font-ui);padding:4px 3px}
+.game-shell .time-actions .execute-button{min-width:74px}
+.game-shell .time-actions .speed-controls{flex:1}.game-shell .time-actions{margin-top:6px;gap:5px}
+.game-shell .diplomacy-alert{top:100px;min-height:68px}
+.game-shell .diplomacy-alert-main strong{font:600 18px/1.4 var(--font-ui)}
+.game-shell .diplomacy-alert-main small{font-size:14px;letter-spacing:0}
+.game-shell .diplomacy-alert-deadline,.game-shell .diplomacy-alert-all{font:14px/1.4 var(--font-ui)}
+.game-shell .diplomacy-alert-deadline b{display:block;margin:4px 0 0}
+
+
+.game-shell .world-overview span{font-size:14px;letter-spacing:0}
+.game-shell .threat-watch{top:calc(var(--content-top) + 132px)}
+.game-shell .watch-heading,.game-shell .watch-row strong{font:600 16px/1.4 var(--font-ui)}
+.game-shell .watch-heading small,.game-shell .watch-row small{font-size:14px;line-height:1.5}
+.game-shell .status-line{font-size:14px;height:20px;line-height:1.5}
+.start-card>p,.start-card .field,.start-card .note{font-size:17px;line-height:1.65}
+.start-card>small{font-size:15px;letter-spacing:1px}.start-card h1{font:700 34px/1.4 var(--font-ui);letter-spacing:0}
+@media(max-width:1400px){
+ .game-shell .command-dock button{flex-direction:column;justify-content:center;width:62px;padding:4px 2px;gap:3px}
+ .game-shell .command-dock button .game-icon{width:28px;height:28px}
+ .game-shell .command-dock button span{font-size:15px}
+}
+@media(max-width:760px){
+ .game-shell .context-panel{width:calc(100% - 24px)}
+ .game-shell[data-view=diplomacy] .left-panel{width:auto}
+ .diplomacy-columns .diplomacy-panel{flex-basis:calc(100vw - 54px)}
+ .game-shell .diplomacy-alert-main strong{font-size:16px}
+ .game-shell .diplomacy-alert-main small{font-size:12px}
+ .game-shell .diplomacy-alert-all{max-width:none;flex:0 0 44px;font-size:12px;padding:5px 3px}
+
+
+
+}
+
+/* Detail windows unfold beside their source menu, with independent scrolling. */
+.game-shell[data-panel=right] .left-panel{display:flex;flex-direction:column}
+.game-shell:not([data-view=diplomacy]) .left-panel{width:auto;right:22px;border:0;background:none;box-shadow:none;overflow:visible;pointer-events:none;animation:none}
+.game-shell:not([data-view=diplomacy]) .left-panel>.panel-content{padding:0;overflow:hidden;pointer-events:none}
+.menu-columns{display:flex;gap:10px;height:100%;width:max-content;max-width:100%;overflow-x:auto;overflow-y:hidden;padding-bottom:8px;pointer-events:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#a58a57 #243328;scroll-snap-type:x proximity}
+.menu-column{display:flex;flex-direction:column;flex:0 0 380px;min-width:0;height:100%;border:3px double var(--ui-brass);background-color:var(--ui-wood);background-image:linear-gradient(110deg,#17251ee8,#36392ce8),var(--paint-panel);box-shadow:inset 0 0 0 2px #171e18;scroll-snap-align:end;animation:diplomacy-unfold .18s ease-out}
+.menu-column-body{flex:1;min-height:0;overflow-y:auto;padding:16px 18px 24px;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#998650 #20382b}
+
+
+.menu-column .text-button.selected,.menu-column .garrison-link.selected{color:#ffe2a4;background:#bca16b24;box-shadow:inset 0 -2px #d1b171}
+.menu-column .army-row.selected,.menu-column .node-unit-open.selected{background:#bca16b24;box-shadow:inset 3px 0 #d1b171}
+@media(max-width:760px){
+ .game-shell:not([data-view=diplomacy]) .left-panel{left:12px;right:12px;width:auto}
+ .menu-column{flex-basis:calc(100vw - 54px)}
+ .menu-column-body{padding:16px 16px 22px}
+}
+@media(prefers-reduced-motion:reduce){.menu-column{animation:none}}
+
+.government-scope{margin:0 0 12px;color:#bba87c;font:500 13px/1.5 var(--font-ui);letter-spacing:1px}
+
+/* Painted command emblems and a matching resource frame keep the upper HUD in-world. */
+.game-shell{--content-top:118px}.game-shell[data-diplomacy-pending=true]{--content-top:198px}
+.game-shell .topbar{height:108px;gap:10px;padding:4px 12px 8px;background:linear-gradient(#15261c70,transparent);align-items:center}
+.game-shell .resources,.game-shell .time-hud{height:82px;border:0;background-color:transparent;background-image:url('assets/art/ui/hud/resource-frame.webp');background-repeat:no-repeat;background-size:100% 100%;box-shadow:none;border-radius:0}
+.game-shell .resources{padding:12px 48px;gap:0}
+.game-shell .resources>button{height:56px;padding:3px 10px;border-left:1px solid #b7a16a40}
+.game-shell .resources>.faction-id{padding:0 10px 0 0;gap:7px}
+.game-shell .resources>.faction-id strong{width:40px;height:48px}
+.game-shell .resources>button:hover:not(:disabled),.game-shell .resources>button[aria-expanded=true]{background:radial-gradient(ellipse at 50% 85%,#e6ca7840,transparent 75%);box-shadow:none;border-color:#b7a16a40}
+.game-shell .command-dock{gap:4px;align-items:center}
+.game-shell .topbar .command-dock button{display:flex;flex-direction:column;justify-content:flex-start;align-items:center;flex:0 0 90px;width:90px;height:96px;min-height:96px;gap:0;padding:18px 8px 0;border:0;border-radius:0;background:none;box-shadow:none;isolation:isolate;transition:color .15s;color:#e1ce9e}
+.game-shell .command-dock button:before{content:'';position:absolute;inset:0;background:url('assets/art/ui/hud/menu-frame.webp') center/100% 100% no-repeat;z-index:-1;pointer-events:none;filter:brightness(.76) saturate(.75);transition:filter .15s}
+.game-shell .command-dock button .game-icon{flex-shrink:0;width:40px;height:40px;padding:0;margin:0;border:0;border-radius:0;background:none;box-shadow:none;object-fit:contain;filter:drop-shadow(0 2px 2px #0009)}
+.game-shell .command-dock button .command-label{position:absolute;bottom:6px;left:8px;right:8px;display:flex;align-items:center;justify-content:center;gap:3px;margin:0;font:600 16px/16px var(--font-ui);letter-spacing:0;white-space:nowrap;text-align:center;text-shadow:0 1px 3px #000}
+.game-shell .topbar .command-dock button:hover:not(:disabled),.game-shell .topbar .command-dock button.selected{border:0;background:none;box-shadow:none;color:#fff0c1}
+.game-shell .command-dock button:hover:before{filter:brightness(1.05) saturate(.95)}
+.game-shell .command-dock button.selected:before{filter:brightness(1.2) saturate(1.05) drop-shadow(0 0 4px #e4bf6577)}
+.game-shell .command-dock .awaiting-response:before{filter:brightness(1.1) drop-shadow(0 0 4px #df9c5a80)}
+.game-shell .command-dock #diplomacy-badge{position:absolute;right:-2px;top:-53px;min-width:21px;height:21px;margin:0;font:700 13px/19px var(--font-ui)}
+.game-shell .time-hud{padding:10px 12px;flex-basis:246px;width:246px}
+.game-shell .diplomacy-alert{top:118px}
+.game-shell .menu-button{background:radial-gradient(circle,#41523c,#182c22);box-shadow:inset 0 0 0 2px #17291f,0 2px 5px #14231f80}
+@media(max-width:760px){
+ .game-shell .topbar{gap:8px}
+ .game-shell .resources{padding:12px 36px}
+ .game-shell .resources>button{padding:3px 9px;min-width:58px}
+ .game-shell .resources>.faction-id{padding-right:7px}
+ .game-shell .resources>.faction-id strong{width:32px;height:44px}
+ .game-shell .command-dock button .command-label{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.game-shell .command-dock button,.game-shell .command-dock button:before{transition:none}}
+
+/* A button's treatment describes its effect before it is pressed. */
+:root{--action-open:#d3d9bc;--action-open-line:#94a18b80;--action-gold:#e2c182;--action-danger:#dca28d}
+.game-shell .context-panel button[data-intent]{position:relative;transition:color .12s,background-color .12s,border-color .12s}
+.game-shell .context-panel button[data-intent=open],.game-shell .context-panel button[data-intent=locate],.game-shell .context-panel button[data-intent=prepare]{border:1px solid var(--action-open-line);border-radius:1px;background:#273b2d55;box-shadow:none;color:var(--action-open);padding-right:34px;text-shadow:none;letter-spacing:0}
+.game-shell .context-panel button[data-intent=open]:hover:not(:disabled),.game-shell .context-panel button[data-intent=locate]:hover:not(:disabled),.game-shell .context-panel button[data-intent=prepare]:hover:not(:disabled){background:#65775a30;border-color:#bdc6a4;color:#f2edcf;box-shadow:none}
+.game-shell .context-panel button[data-intent=open]:after,.game-shell .context-panel button[data-intent=locate]:after{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:18px;height:22px;line-height:1;pointer-events:none}
+.game-shell .context-panel button[data-intent=open]:after{content:'›' / '';border:1px solid var(--action-open-line);font-size:23px}
+.game-shell .context-panel button[data-intent=locate]:after{content:'⌖' / '';font-size:22px}
+.game-shell .context-panel .text-button[data-intent]{padding:5px 32px 5px 8px;font-size:15px}
+.game-shell .context-panel .garrison-link[data-intent=open]{width:100%;padding:2px 24px 2px 3px;text-align:left}
+.game-shell .context-panel .garrison-link[data-intent=open]:after{right:3px;width:15px;border:0}
+.game-shell .context-panel .garrison-link strong{font-size:23px}
+.game-shell .context-panel button[data-intent=execute],.game-shell .context-panel button[data-intent=danger]{padding:10px 12px 10px 38px;border:3px double #cfb477;border-radius:1px;background:linear-gradient(#c3a867,#a08448);box-shadow:inset 0 0 0 1px #e6cc9040;color:#18291e;font-weight:650;letter-spacing:0;text-shadow:none}
+.game-shell .context-panel button[data-intent=execute]:before,.game-shell .context-panel button[data-intent=danger]:before{position:absolute;left:12px;top:50%;transform:translateY(-50%);font:700 19px/1 var(--font-ui);pointer-events:none}
+.game-shell .context-panel button[data-intent=execute]:before{content:'✓' / ''}
+.game-shell .context-panel button[data-intent=execute]:hover:not(:disabled){background:linear-gradient(#e0c38a,#bba064);border-color:#f2d89c;color:#18291e}
+.game-shell .context-panel button[data-intent=danger]{border-color:#c38768;background:linear-gradient(#7c4436,#593126);color:#ffe0c6;box-shadow:inset 0 0 0 1px #e1a27c26}
+.game-shell .context-panel button[data-intent=danger]:before{content:'!' / ''}
+.game-shell .context-panel button[data-intent=danger]:hover:not(:disabled){background:linear-gradient(#97533e,#713e2f);border-color:#e0ab85;color:#fff0d9}
+.game-shell .context-panel button[data-intent]:disabled{opacity:.5;cursor:not-allowed;filter:saturate(.5)}
+.game-shell .context-panel .order-caption{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:18px}
+.game-shell .context-panel .order-caption strong{font-size:17px;color:#e5d6ae}
+.game-shell .context-panel .order-caption small{font-size:14px;color:#b8c4af}
+.game-shell .context-panel .order-types{margin-top:8px}
+.game-shell .context-panel .order-types button{position:relative;background:#1e332a;border-color:#6f806665;padding-top:13px}
+.game-shell .context-panel .order-types button:before{content:'';position:absolute;top:4px;left:calc(50% - 3px);width:6px;height:6px;border:1px solid #82947c;border-radius:50%}
+.game-shell .context-panel .order-types button.selected{background:#344a36;border-color:#b4c39a;color:#eef0d5;box-shadow:inset 0 -2px #9bb087}
+.game-shell .context-panel .order-types button.selected:before{background:#d5e4b7;border-color:#d5e4b7}
+.game-shell .context-panel .order-stage{display:block;margin:2px 0 7px;color:#d5bd83;font-size:14px}
+.game-shell .context-panel .immediate-hint{display:inline-block;margin-left:8px;padding:0 6px;border:1px solid #bc98546b;border-radius:1px;color:#e5bd79;font:13px/21px var(--font-ui);vertical-align:middle;white-space:nowrap}
+.game-shell .context-panel label:has(.immediate-hint) select{border-left:3px solid #bc9854}
+.game-shell .context-panel .army-row[data-intent=open]{padding-right:34px}
+.game-shell .context-panel .live-job [data-cancel]{position:absolute;padding:4px 7px 4px 25px;font-size:14px}
+.game-shell .context-panel .live-job small{padding-right:68px}
+.game-shell .context-panel .live-job [data-cancel]:before{left:8px;font-size:16px}
+.game-shell .diplomacy-panel button[data-intent=open],.game-shell .diplomacy-panel button[data-intent=locate],.game-shell .diplomacy-panel button[data-intent=prepare]{--action-open-line:#8b754c70;color:#57462c;background:#ede0c01f}
+.game-shell .diplomacy-panel button[data-intent=open]:hover:not(:disabled){background:#a5854820;border-color:#91733e;color:#4b351b}
+.game-shell .diplomacy-panel .diplomacy-choice[data-intent=open]{padding:12px 34px 12px 10px;margin:7px 0}
+.game-shell .diplomacy-panel .diplomacy-choice.selected{background:#a5854830;box-shadow:inset 3px 0 #91733e}
+.game-shell .diplomacy-panel .immediate-hint{color:#7d4b20;border-color:#936a366b;background:#ba864415}
+.game-shell .diplomacy-panel .diplomacy-actions [data-offer-reject]{flex-basis:auto;margin:10px 0 0;padding-left:32px;min-width:110px}
+.game-shell .command-dock button .menu-open-cue{display:block;margin:0;font:500 16px/1 var(--font-ui);color:#b7c6a2}
+@media(max-width:760px){
+ .game-shell .diplomacy-panel .diplomacy-actions{flex-wrap:wrap}
+ .game-shell .diplomacy-panel .diplomacy-actions [data-offer-reject]{margin:0;flex:0 0 112px}
+}
+@media(prefers-reduced-motion:reduce){.game-shell .context-panel button[data-intent]{transition:none}}
+
+/* The region selector stays anchored when dispatches change the panel's top edge. */
+.game-shell .region-dock{position:absolute;left:22px;bottom:28px;z-index:4;width:380px;max-width:calc(100% - 44px);height:62px;display:flex;align-items:center;gap:12px;padding:12px 18px;background:url('assets/art/ui/hud/resource-frame.webp') center/100% 100% no-repeat}
+.game-shell .region-dock[hidden]{display:none}
+.game-shell .region-dock label{flex-shrink:0;margin:0;color:#cabb93;font:14px/1.4 var(--font-ui)}
+.game-shell .region-dock select{flex:1;min-width:0;min-height:38px;padding:6px 8px;border:1px solid #a08c5660;border-radius:1px;background:#203a2b;color:#ecddb2;font:600 17px/1.4 var(--font-ui)}
+.game-shell[data-region-dock=true] .left-panel{bottom:102px}
+@media(max-width:760px){
+ .game-shell .region-dock{left:12px;width:calc(100% - 54px);max-width:none;padding:12px 14px;gap:8px}
+}
+
+/* The options landing page contains destinations; each opens its own window. */
+.game-shell .settings-intro{margin:0 0 24px;color:#b8c3a8;letter-spacing:1px}
+.settings-menu{display:flex;flex-direction:column;gap:14px}
+.game-shell .context-panel .settings-choice[data-intent=open]{width:100%;min-height:94px;padding:16px 38px 16px 16px;text-align:left;background:linear-gradient(100deg,#43513b55,#26392a44);border-color:#aa97616b}
+.game-shell .settings-choice strong{display:block;color:#ebd9a8;font:650 25px/1.4 var(--font-ui)}
+.game-shell .context-panel .settings-choice small{display:block;margin-top:5px;font-size:15px;color:#bcc6ad}
+.settings-secondary{margin-top:30px;padding-top:18px;border-top:1px solid #bca16b40}
+.game-shell .context-panel .settings-status{margin-bottom:26px;color:#c1c8b7;font-size:15px}
+.game-shell .context-panel .settings-status .immediate-hint{margin-left:0;margin-right:6px}
+.game-shell .sound-settings .slider-label{margin-top:24px;font-size:17px}
+.game-shell .sound-settings input[type=range]{width:100%;margin:12px 0 22px}
+.game-shell .sound-settings [data-action=mute]{width:100%;min-height:44px;margin-top:18px;border:1px solid #9eae8580;border-radius:1px;background:#263b2d;color:#e1d8b9;font-size:17px}
+.game-shell .sound-settings [data-action=mute][aria-pressed=true]{background:#4d4931;border-color:#ceb16f;color:#ffdfa2}
+.language-current{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0;padding:18px 14px;border:1px solid #a6b38b70;background:#35483155}
+.language-current strong{font-size:22px;color:#ead8a8}.language-current span{font-size:15px;color:#c6d3ae}
+
+/* Garrison and moving units share one scrollable view; status details stay on hover. */
+.game-shell .node-inspection{height:auto;display:block}
+.game-shell .node-totals{align-items:center;padding:10px 0 14px}
+.game-shell .node-totals>span:first-child{font:15px/1.5 var(--font-ui)}
+.game-shell .node-totals strong{font:600 25px/1.3 var(--font-ui)}
+.node-group{margin-top:22px}
+.game-shell .node-group h3{display:flex;align-items:baseline;gap:8px;margin:0 0 6px;font:600 19px/1.4 var(--font-ui);color:#e5d3a5}
+.game-shell .node-group h3 small{color:#aeb99e;font-size:15px}
+.game-shell .node-unit{padding:12px 0}
+.game-shell .node-unit-title{align-items:center;gap:8px}
+.game-shell .node-unit-title>strong,.game-shell .node-unit-open{flex:1;min-width:0}
+.game-shell .node-unit-title strong{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+.game-shell .node-unit-title b{flex-shrink:0}
+.game-shell .context-panel .node-unit-open[data-intent=open]{padding:4px 20px 4px 0;text-align:left;border:0;background:none;box-shadow:none}
+.game-shell .context-panel .node-unit-open[data-intent=open]:after{right:0;width:14px;border:0}
+.game-shell .context-panel .node-unit-open[data-intent=open]:hover{background:#b5a76810}
+.game-shell .context-panel .node-unit-open.selected{background:#bca16b24;box-shadow:inset 2px 0 #d1b171}
+.game-shell .node-unit p{font-size:15px;white-space:normal;overflow:visible}
+.game-shell .node-empty{padding:8px 0;font:15px/1.6 var(--font-ui)}
+.game-shell .node-state-icon{display:inline-flex;flex:0 0 32px;align-items:center;justify-content:center;width:32px;height:32px;min-height:32px;padding:0;box-shadow:none;border:1px solid #bca16b77;border-radius:50%;color:#e1ca92;background:#21392b;cursor:help}
+.node-state-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.game-shell .node-state-icon[data-state=attack]{color:#edab91;border-color:#bd7763}
+.game-shell .node-state-icon[data-state=watch],.game-shell .node-state-icon[data-state=food]{color:#eac573}
+.game-shell .node-state-icon[data-state=recover]{color:#b8d49d}
+.game-shell .node-state-icon:focus-visible{outline:2px solid #f2d797;outline-offset:3px}
+.node-tooltip{position:fixed;z-index:20;width:max-content;max-width:min(310px,calc(100vw - 24px));padding:12px 14px;border:1px solid #bca16b;background:#192c23;box-shadow:0 4px 14px #0008;color:#eadbb8;font:15px/1.6 var(--font-ui);overflow-wrap:anywhere}
+.node-tooltip[hidden]{display:none}
+
+/* Brass-rimmed selectors, including the list, belong to the realm's instruments. */
+.realm-select{position:relative;display:block;width:100%;min-width:0;margin-top:6px}
+.realm-select select[hidden]{display:none}
+button.realm-select-trigger{display:flex;align-items:center;gap:12px;width:100%;min-height:46px;margin:0;padding:10px 12px 10px 15px;border:1px solid #9f8755;border-radius:2px;background:linear-gradient(105deg,#2e4332,#1a3025);box-shadow:inset 0 0 0 2px #15271d,inset 0 0 0 3px #c7a76a26,0 2px 4px #08180e38;color:#eadbb5;font:500 17px/1.5 var(--font-ui);text-align:left;transition:border-color .15s,box-shadow .15s,background .15s}
+button.realm-select-trigger:hover:not(:disabled),button.realm-select-trigger[aria-expanded=true]{border-color:var(--ui-brass-light);background:linear-gradient(105deg,#3a4c35,#223b2b);box-shadow:inset 0 0 0 2px #19291e,inset 0 0 0 3px #d8b97840,0 0 12px #d5b57612;color:#fff0c8}
+button.realm-select-trigger:active:not(:disabled){transform:none}
+button.realm-select-trigger:focus-visible{outline:2px solid var(--ui-brass-light);outline-offset:3px}
+.realm-select-value{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.realm-select-arrow{display:grid;place-items:center;flex:0 0 28px;height:24px;border-left:1px solid #c5a86a4a;color:var(--ui-brass-light)}
+.realm-select-arrow:after{content:'';width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .15s}
+[aria-expanded=true]>.realm-select-arrow:after{transform:translateY(2px) rotate(225deg)}
+.region-dock .realm-select{flex:1;width:auto;margin:0}
+.region-dock button.realm-select-trigger{min-height:38px;padding:6px 8px 6px 12px;font-weight:600}
+.realm-select-popup{position:fixed;z-index:30;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#a88d57 #1c3025;padding:5px;border:3px double #c0a16a;border-radius:2px;background:linear-gradient(115deg,#273c2e,#192c23);box-shadow:inset 0 0 0 1px #101f17,0 10px 28px #07150eb3,0 2px 6px #0007;color:#eadbb5;font:17px/1.5 var(--font-ui);animation:realm-select-reveal .13s ease-out;transform-origin:top}
+.realm-select-popup[data-direction=up]{transform-origin:bottom}
+.realm-select-heading{display:flex;align-items:center;gap:9px;padding:8px 12px 10px;margin:0 4px 4px;border-bottom:1px solid #bca16b40;color:#beab7e;font:500 12px/1.5 var(--font-ui);letter-spacing:1px}
+.realm-select-heading:before{content:'◆';font-size:7px;color:#c8a867}
+.realm-select-option{display:flex;align-items:center;gap:11px;min-height:46px;padding:10px 12px;border:1px solid transparent;border-radius:1px;cursor:pointer;touch-action:manipulation;transition:background .1s,border-color .1s}
+.realm-select-option+.realm-select-option{border-top-color:#bca16b14}
+.realm-select-option[aria-selected=true]{background:linear-gradient(90deg,#bca16b26,#bca16b09);color:#ffe4a8}
+.realm-select-option.is-active{border-color:#d0b27380;background:linear-gradient(90deg,#bca16b38,#bca16b15);color:#fff0c9;box-shadow:inset 2px 0 #e7c984}
+.realm-select-option[aria-disabled=true]{opacity:.4;cursor:default}
+.realm-select-mark{flex:0 0 17px;color:#aa925f;font-size:13px;text-align:center}
+[aria-selected=true]>.realm-select-mark{color:#f0d699;font-size:16px}
+.realm-select-copy{display:block;min-width:0;overflow-wrap:anywhere}
+.realm-select-copy>span{display:block;font-weight:550}
+.realm-select-copy small{display:block;margin-top:2px;color:#bdc5b0;font:13px/1.6 var(--font-ui)}
+.diplomacy-panel button.realm-select-trigger{margin:0;padding:10px 12px;font:500 17px/1.5 var(--font-ui);border-color:#a08048;background:linear-gradient(110deg,#f5e6c4,#e1cda2);box-shadow:inset 0 0 0 2px #f5e5be,inset 0 0 0 3px #9c7c4933;color:#49351e}
+.diplomacy-panel button.realm-select-trigger:hover:not(:disabled),.diplomacy-panel button.realm-select-trigger[aria-expanded=true]{background:linear-gradient(110deg,#fff0cc,#ecd8ac);border-color:#78562b;color:#382615}
+.diplomacy-panel .realm-select-arrow{color:#795b2b;border-left-color:#9b78454a}
+.realm-select-popup[data-theme=parchment]{background:linear-gradient(115deg,#f4e5c2,#dfcba1);border-color:#987540;color:#49351e;box-shadow:inset 0 0 0 1px #f8eac8,0 10px 28px #07150e99;scrollbar-color:#9c7c49 #e5d2ac}
+.realm-select-popup[data-theme=parchment] .realm-select-heading{color:#765a33;border-color:#9c7c4955}
+.realm-select-popup[data-theme=parchment] .realm-select-option[aria-selected=true]{background:#9b78451c;color:#674116}
+.realm-select-popup[data-theme=parchment] .realm-select-option.is-active{background:#9b784530;border-color:#98754080;color:#382615;box-shadow:inset 2px 0 #8e642e}
+.realm-select-popup[data-theme=parchment] .realm-select-mark{color:#8c6936}
+.realm-select-popup[data-theme=parchment] .realm-select-copy small{color:#765a33}
+@keyframes realm-select-reveal{from{opacity:0;transform:scaleY(.96)}to{opacity:1;transform:scaleY(1)}}
+@media(prefers-reduced-motion:reduce){.realm-select-popup{animation:none}button.realm-select-trigger,.realm-select-arrow:after,.realm-select-option{transition:none}}
+
+/* Resource choices express reserve priorities; dispatches belong to the simulation. */
+.resource-policy-intro{margin:12px 0 18px;color:#c4cdb8;font:16px/1.7 var(--font-ui)}
+.resource-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px 0 18px;border-bottom:1px solid #bca16b40}
+.resource-summary small{display:block;color:#b6c4aa;font-size:13px}
+.resource-summary strong{display:block;margin-top:5px;color:#f0ddb1;font:600 24px/1.4 var(--font-ui)}
+.resource-summary strong span{margin-left:3px;font-size:13px;font-weight:400}
+.resource-policy-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0 18px}
+.game-shell .context-panel .resource-policy-choices button{min-width:0;padding:12px 10px;border:1px solid #92a07966;border-radius:1px;background:#20392b;text-align:left;color:#d4dcc8}
+.resource-policy-choices strong,.resource-policy-choices small{display:block}
+.resource-policy-choices strong{font:600 17px/1.5 var(--font-ui)}
+.resource-policy-choices small{margin-top:5px;color:#b4c0a7;font:13px/1.6 var(--font-ui);overflow-wrap:anywhere}
+.game-shell .context-panel .resource-policy-choices button[aria-pressed=true]{border-color:var(--ui-brass-light);background:#74663740;color:#f2dcab;box-shadow:inset 0 -2px var(--ui-brass)}
+.resource-operation-status{padding:14px 12px;border-left:2px solid var(--ui-brass);background:#bca16b10}
+.resource-operation-status strong{color:#e9d5a4;font:600 17px/1.5 var(--font-ui)}
+.resource-operation-status p{margin-top:6px;color:#c6d0bb;font:15px/1.7 var(--font-ui)}
+
+/* Keep menus open while briefly making room for a located map target. */
+.game-shell .left-panel{transition:top .24s ease}
+.game-shell[data-map-peek=true] .left-panel{top:var(--map-peek-top)}
+@media(prefers-reduced-motion:reduce){.game-shell .left-panel{transition:none}}
+
+/* Kingdom totals in the HUD, with the selected stronghold's stock beside its orders. */
+.game-shell .resources>.faction-id .resource-scope{display:block;margin-top:3px;color:#aeb99e;font:11px/1.3 var(--font-ui)}
+.game-shell .resources>[data-resource]{flex-shrink:0}
+.game-shell .resources>[data-resource] small{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.game-shell .resources>[data-resource] .game-icon{width:21px;height:21px;flex-shrink:0}
+.local-stock{margin:14px 0 16px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.game-shell .local-stock h3{margin:0 0 10px;color:#bfc7ae;font:500 15px/1.4 var(--font-ui)}
+.local-stock dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}
+.local-stock dl>div{min-width:0}
+.local-stock dt{display:flex;align-items:center;gap:4px;color:#c7cdb7;font:14px/1.5 var(--font-ui);white-space:nowrap}
+.local-stock .game-icon{width:21px;height:21px;flex-shrink:0}
+.local-stock dd{margin:5px 0 0;color:#f0dfb5;font:600 20px/1.3 var(--font-ui);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.material-stocks article{padding:16px 0;border-bottom:1px solid var(--line)}
+.material-stocks article>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
+.material-stocks strong{font:600 18px/1.5 var(--font-ui);color:#e6d8ad}
+.material-stocks b{font:600 22px/1.4 var(--font-ui);color:#f0dfb5;font-variant-numeric:tabular-nums}
+
+/* Warning causes and deadlines remain readable instead of ending in an ellipsis. */
+.game-shell .threat-watch{width:min(300px,calc(100vw - 44px));max-height:calc(100dvh - var(--content-top) - 152px);overflow-y:auto;scrollbar-width:thin}
+.game-shell .watch-row{align-items:center;padding:10px 0}
+.game-shell .watch-row strong,.game-shell .watch-row small{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+.game-shell .watch-row>span:last-child{flex-shrink:0}
+@media(max-width:760px){.game-shell .threat-watch{right:12px;width:min(280px,calc(100vw - 24px))}}
